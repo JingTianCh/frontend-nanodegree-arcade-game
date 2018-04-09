@@ -49,18 +49,40 @@ Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-Player.prototype.update=function(dt){};
+Player.prototype.update=function(dt){
+
+};
 
 Player.prototype.handleInput=function(movement){
-    switch(movement){
+    switch (movement) {
         case 'left':
-            if((this.x>=101)&&(this.x<=404)){this.x-=101;}break;
+            if ((this.x >= 101) && (this.x <= 404)) {
+                this.x -= 101;
+            }
+            break;
         case 'right':
-            if((this.x>=0)&&(this.x<=403)){this.x+=101;}break;
-        case 'up': 
-            if(this.y>=55){this.y -= 83;} break;
+            if ((this.x >= 0) && (this.x <= 403)) {
+                this.x += 101;
+            }
+            break;
+        case 'up':
+            if (this.y >= 55) {
+                this.y -= 83;
+            }
+            if (this.y === -28) {
+                dateEnd = Date.now();
+                alert("You won within " + (dateEnd - dateStart) / 1000 + "s!");
+                var con = confirm("Play Again?");
+                dateStart = Date.now();
+
+                this.reset();
+            }
+            break;
         case 'down':
-            if(this.y<=386){this.y += 83;} break;   
+            if (this.y <= 386) {
+                this.y += 83;
+            }
+            break;
     }
     
 };
@@ -71,7 +93,7 @@ Player.prototype.reset=function(){
 };
 
 Enemy.prototype.checkCollision=function(player){
-    if((this.y===player.y)&&(Math.abs(this.x-player.x)<=10)){
+    if((this.y===player.y)&&(Math.abs(this.x-player.x)<=30)){
         player.reset();
     }
 };
@@ -79,13 +101,14 @@ Enemy.prototype.checkCollision=function(player){
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
 var allEnemies =[];
-for(var i=0;i<6;i++){
+for(var i=0;i<5;i++){
     var random=Math.floor(Math.random()*3);
     var newEnemy= new Enemy(0,55+83*(random));
     allEnemies.push(newEnemy);
 }
 var player = new Player(101*2,83*4+55);
-
+var dateStart= new Date();
+var dateEnd=new Date();
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
 document.addEventListener('keyup', function(e) {
